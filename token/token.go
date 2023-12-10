@@ -2,7 +2,6 @@ package token
 
 type TokenType string
 
-// TOKEN TYPE DEFINITIONS
 const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
@@ -19,8 +18,9 @@ const (
 	ASTERISK = "*"
 	SLASH    = "/"
 
-	LT     = "<"
-	GT     = ">"
+	LT = "<"
+	GT = ">"
+
 	EQ     = "=="
 	NOT_EQ = "!="
 
@@ -49,16 +49,16 @@ type Token struct {
 }
 
 var keywords = map[string]TokenType{
-	"fn":    FUNCTION,
-	"let":   LET,
-	"true":  TRUE,
-	"false": FALSE,
-	"if":    IF,
-	"else":  ELSE,
-	"retun": RETURN,
+	"fn":     FUNCTION,
+	"let":    LET,
+	"true":   TRUE,
+	"false":  FALSE,
+	"if":     IF,
+	"else":   ELSE,
+	"return": RETURN,
 }
 
-func LokupIdent(ident string) TokenType {
+func LookupIdent(ident string) TokenType {
 	if tok, ok := keywords[ident]; ok {
 		return tok
 	}
