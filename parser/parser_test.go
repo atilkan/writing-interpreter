@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"monkey/ast"
 	"monkey/lexer"
 	"testing"
@@ -66,6 +67,7 @@ return 10;
 return 87979;
 `
 	l := lexer.New(input)
+	fmt.Println(*l)
 	p := New(l)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
