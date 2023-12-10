@@ -1,4 +1,4 @@
 lexer_test:
-	go test -count=1 ./lexer
+	go test -count=1 -v ./lexer
 parser_test:
-	go test -count=1 ./parser
+	go test -count=1 -v ./parser
