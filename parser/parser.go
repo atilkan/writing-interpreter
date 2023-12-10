@@ -16,8 +16,8 @@ type Parser struct {
 
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{l: l, errors: []string{}}
-	p.NextToken()
-	p.NextToken()
+	p.nextToken()
+	p.nextToken()
 
 	return p
 }
@@ -31,7 +31,7 @@ func (p *Parser) peekError(t token.TokenType) {
 	p.errors = append(p.errors, msg)
 }
 
-func (p *Parser) NextToken() {
+func (p *Parser) nextToken() {
 	p.curToken = p.peekToken
 	p.peekToken = p.l.NextToken()
 }
@@ -45,7 +45,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 		if stmt != nil {
 			program.Statements = append(program.Statements, stmt)
 		}
-		p.NextToken()
+		p.nextToken()
 	}
 
 	return program
@@ -55,6 +55,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	switch p.curToken.Type {
 	case token.LET:
 		return p.parseLetStatement()
+	case token.RETURN:
+		return p.parseReturnStatement()
 	default:
 		return nil
 	}
@@ -75,7 +77,19 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 
 	// we skip expression until we encounter  a semicolon
 	for !p.curTokenIs(token.SEMICOLON) {
-		p.NextToken()
+		p.nextToken()
+	}
+
+	return stmt
+}
+
+func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
+	stmt := &ast.ReturnStatement{Token: p.curToken}
+
+	p.nextToken()
+
+	for !p.curTokenIs(token.SEMICOLON) {
+		p.nextToken()
 	}
 
 	return stmt
@@ -91,7 +105,7 @@ func (p *Parser) peekTokenIs(t token.TokenType) bool {
 
 func (p *Parser) expectPeek(t token.TokenType) bool {
 	if p.peekTokenIs(t) {
-		p.NextToken()
+		p.nextToken()
 		return true
 	} else {
 		p.peekError(t)
