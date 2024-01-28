@@ -1,5 +1,6 @@
 package object
 
+// environment means scope
 func NewEnclosedEnvironment(outer *Environment) *Environment {
 	env := NewEnvironement()
 	env.outer = outer
